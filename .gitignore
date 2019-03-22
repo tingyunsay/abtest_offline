@@ -1,0 +1,9 @@
+*.pyc
+*.log
+data
+*.txt
+*.list
+build
+*.spec
+*bak
+*.dat
