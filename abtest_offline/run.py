@@ -2,11 +2,11 @@
 # -*- coding:utf-8 -*-
 
 import os,re
-from base_config import *
 from pyspark import SparkConf, SparkContext
 import logging
 import redis 
-from redis_conf import *
+from conf.base_config import *
+from conf.redis_conf import *
 from operator import add
 import subprocess
 import datetime
