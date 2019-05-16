@@ -5,7 +5,7 @@ DEFAULT_WEIGHT = 1 #每个关联算法默认比重
 
 #基础库地址
 #song_dict_path="ftp://192.168.5.215:/home/work/odp/webroot/downloads/quku/song.id.dat"
-song_dict_path="/Users/tingyun/PycharmProjects/Tingyun/svn/abtest_offline/song.id.dat"
+song_dict_path="song.id.dat"
 
 album_dict_path="album_dict"
 
@@ -55,6 +55,10 @@ all_rerank=[
 product = {
     "linear_similar_song":{
         "name":"linear_similar_song",
+        #使用哪种类型的rdd(song，album，singer)，基础数据
+        "class":"song",
+        #合并策略灌入redis 的结果key
+        "key":"abtest_simSong_songid",
         "source":23,
         "rerankid":2,
         #策略  混合多种model
