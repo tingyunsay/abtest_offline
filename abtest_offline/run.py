@@ -48,10 +48,13 @@ class ABTest(object):
         self.author = "tingyun"
         self.allmodel = self.parse_config()
         self.allrerank = all_rerank 
-        self.product = product 
+        self.product = product_strategy 
         #local模式(暂时使用此模式)，集群模式需要搭建hadoop
-        self.sc = SparkContext("local","APP_NAME")
-        
+        #串行执行多个产品线任务时候会报错，spark当前只能存在一个实例
+        try:
+            self.sc = SparkContext("local","APP_NAME")
+        except Exception as e:
+            self.sc = SparkContext.getOrCreate()
         #conf = SparkConf().setAppName(APP_NAME).setMaster("spark://127.0.0.1:7077")
         #self.sc = SparkContext(conf=conf)
         #歌词库
@@ -73,13 +76,13 @@ class ABTest(object):
         pass
     #根据产品线配置  批量混合各个算法策略
     def abtest_gen_rsonglist(self,pt):
-        if pt not in product.keys():
+        if pt not in self.product.keys():
             logging.warning("product name not valid")
             return 0
         my_modeldict = self.parse_config()
-        strategy = product[pt]["strategy"]
-        pt_key = product[pt]["key"]
-        pt_class = product[pt]["class"]
+        strategy = self.product[pt]["strategy"]
+        pt_key = self.product[pt]["key"]
+        pt_class = self.product[pt]["class"]
         weight_total = 0
         res = {}
         if pt_class == "song":
@@ -232,7 +235,7 @@ class ABTest(object):
 
 def run():
     #串行执行(todo : 提供选择并行或串行)
-    for k,v in product.items():
+    for k,v in product_strategy.items():
         logging.info("begin process product : [%s]."%(k))
         AB = ABTest().abtest_gen_rsonglist(k)
         logging.info("end process product : [%s]."%(k))

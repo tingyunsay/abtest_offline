@@ -52,17 +52,14 @@ all_rerank=[
     }
 ]
 
-product = {
+product_strategy = {
     "linear_similar_song":{
         "name":"linear_similar_song",
-        #使用哪种类型的rdd(song，album，singer)，基础数据
-        "class":"song",
-        #合并策略灌入redis 的结果key
-        "key":"abtest_simSong_songid",
+        "class":"song",                     #使用哪种类型的rdd(song，album，singer)，基础数据
+        "key":"abtest_simSong_songid",      #合并策略灌入redis 的结果key
         "source":23,
         "rerankid":2,
-        #策略  混合多种model
-        "strategy":[
+        "strategy":[                        #策略  混合多种model
             {
                 "modelid":18,
                 "weight":2
@@ -72,10 +69,43 @@ product = {
                 "weight":2
             }
         ]
-    }
+    },
+    "linear_similar_song_2":{
+        "name":"linear_similar_song_2",
+        "class":"song",                     #使用哪种类型的rdd(song，album，singer)，基础数据
+        "key":"abtest_simSong_2_songid",    #合并策略灌入redis 的结果key
+        "source":24,
+        "rerankid":2,
+        "strategy":[                        #策略  混合多种model
+            {
+                "modelid":19,
+                "weight":2
+            },
+            {
+                "modelid":20,
+                "weight":2
+            }
+        ]
+    },
         
 }
 
+#abtest分流
+abtest = {
+    "similar_song":{
+        "name":"similar_song",
+        "product_strategy":[                #产品线策略
+            {
+                "name":"linear_similar_song",
+                "rate":"50"
+            },
+            {
+                "name":"linear_similar_song2",
+                "rate":"50"
+            }
+        ]
+    }
+}
 
 
 

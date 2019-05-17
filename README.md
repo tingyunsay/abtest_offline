@@ -61,6 +61,25 @@ key		redis中存储的key格式，一般取得其前缀，拼接对应类型的�
         ]
     }
 ```
+### abtest分流
+此部分暂时没有使用于本项目中（todo：考虑如何在离线层作这部分工作，这部分原是在在线计算的时候，按照配置的rate分流量到不同的产品线策略上，再根据日志反馈调整比重）
+```python
+abtest = {
+    "similar_song":{
+        "name":"similar_song",
+        "product_strategy":[                #产品线策略
+            {
+                "name":"linear_similar_song",
+                "rate":"50"
+            },
+            {
+                "name":"linear_similar_song2",
+                "rate":"50"
+            }
+        ]
+    }
+}
+```
 ### 其他配置
 redis配置 	--	整个项目使用单一redis配置  
 字典地址	--	目前为本地地址,需要手动拉取（todo：ftp地址或hdfs地址，拉取至本地，供后续计算）
